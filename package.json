@@ -1,0 +1,40 @@
+{
+  "name": "tortoise-twitter",
+  "version": "1.0.0",
+  "description": "A healthier way to consume twitter content.  Slow and steady wins the race!",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottmanderson/tortoise-twitter.git"
+  },
+  "keywords": [
+    "twitter"
+  ],
+  "author": "Scott Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scottmanderson/tortoise-twitter/issues"
+  },
+  "homepage": "https://github.com/scottmanderson/tortoise-twitter#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.0.0",
+    "express-session": "^1.17.1",
+    "moment": "^2.27.0",
+    "mongoose": "^5.9.22",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "twit": "^2.2.11"
+  }
+}
