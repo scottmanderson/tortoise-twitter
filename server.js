@@ -1,31 +1,31 @@
-const dotenv = require('dotenv');
-const express = require('express');
-const exphbs = require('express-handlebars')
-const flash = require('connect-flash');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const passport = require('passport');
-const path = require('path');
-const session = require('express-session');
+const dotenv = require("dotenv");
+const express = require("express");
+const exphbs = require("express-handlebars");
+const flash = require("connect-flash");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const passport = require("passport");
+const path = require("path");
+const session = require("express-session");
 
-const connectDB = require('./config/db');
-const updateTweetsForUser = require('./twit-fetch')
-const UserModel = require('./models/User')
+const connectDB = require("./config/db");
+const updateTweetsForUser = require("./twit-fetch");
+const UserModel = require("./models/User");
 
 // Load config from .env
-dotenv.config({ path: './.env' });
+dotenv.config({ path: "./.env" });
 
-const mongoStore = require('connect-mongo')(session)
+const mongoStore = require("connect-mongo")(session);
 connectDB();
 
 const app = express();
 
 // Body parser
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Static folder
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, "public")));
 
 // view engine configuration
 // Handlebars Helpers
@@ -35,11 +35,11 @@ const {
   truncate,
   editIcon,
   select,
-} = require('./helpers/hbs')
+} = require("./helpers/hbs");
 
 // Handlebars
 app.engine(
-  '.hbs',
+  ".hbs",
   exphbs({
     helpers: {
       formatDate,
@@ -48,33 +48,36 @@ app.engine(
       editIcon,
       select,
     },
-    defaultLayout: 'main',
-    extname: '.hbs',
+    defaultLayout: "main",
+    extname: ".hbs",
   })
-)
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+);
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "hbs");
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Sessions
+// code template from express github page
 app.use(
   session({
-    secret: 'Tokyo, Japan',
+    secret: "Tokyo, Japan",
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({ mongooseConnection: mongoose.connection }),
   })
-)
+);
 
 // Passport middleware
-app.use(passport.initialize())
-app.use(passport.session())
-require ('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+require("./config/passport")(passport);
+
+app.use(flash());
 
 // Routes
-// app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'))
+app.use("/", require("./routes/index"));
+app.use("/users", require("./routes/users"));
 
 async function updateDB() {
   let usernamesToUpdate = [];
@@ -82,9 +85,9 @@ async function updateDB() {
     if (err) {
       console.log(err);
     }
-    console.log(`users: ${typeof users} ${users}`);
+
     for (let user of users) {
-     usernamesToUpdate.push(user.name);
+      usernamesToUpdate.push(user.name);
     }
   });
 
@@ -97,9 +100,9 @@ async function updateDB() {
 
 updateDB();
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.listen(
   PORT,
   console.log(`Server running on ${PORT} in ${process.env.NODE_ENV} mode`)
-)
+);
