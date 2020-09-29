@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const exphbs = require("express-handlebars");
 const flash = require("connect-flash");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const passport = require("passport");
@@ -23,6 +24,9 @@ const app = express();
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Method Override (POST -> PUT/DELETE)
+app.use(methodOverride("_method"));
 
 // Static folder
 app.use(express.static(path.join(__dirname, "public")));
@@ -78,6 +82,7 @@ app.use(flash());
 // Routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
+app.use("/handles", require("./routes/handles"));
 
 async function updateDB() {
   let usernamesToUpdate = [];

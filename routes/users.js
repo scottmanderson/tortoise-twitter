@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
   let errors = [];
 
   if (!name || !email || !password || !password2 || !preferredTimeGMT) {
-    error.push({ msg: "All fields are required" });
+    errors.push({ msg: "All fields are required" });
   }
 
   if (password2 !== password) {

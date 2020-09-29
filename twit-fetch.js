@@ -15,6 +15,33 @@ const T = new Twit({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
+// TODO Should probably move this logic pre-DB write
+function convertPreferredTimeToLastDatetime(time) {
+  const prefHour = Number(time.slice(0, time.indexOf(":")));
+  const prefMinute = Number(time.slice(time.indexOf(":") + 1));
+  const now = new Date();
+  const yesterday =
+    now.getUTCHours() > prefHour ||
+    (now.getUTCHours() === prefHour && now.getUTCMinutes() > prefMinute);
+  if (yesterday) {
+    return new Date(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() - 1,
+      prefHour,
+      prefMinute
+    );
+  } else {
+    return new Date(
+      now.getFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      prefHour,
+      prefMinute
+    );
+  }
+}
+
 async function updateTweetsForUser(userName) {
   let user = await UserModel.findOne({ name: userName });
   let trackedHandles = user.trackedHandles;
@@ -65,25 +92,31 @@ async function updateTweetsForUser(userName) {
     }
     let begin = new Date(end.setDate(end.getDate() - lookbackPeriodHours / 24));
 
-    function postBuilder(tweets, handle) {
+    async function postBuilder(tweets, handle) {
       let newPost = new PostModel({
         title: `Tweets from @ ${handle} in ${lookbackPeriodHours} hours ending ${end.toLocaleString(
           "en-US"
         )}`,
+        userID: user.id,
         handle: handle,
         effectiveDatetime: end,
         includedTweets: tweets || "",
       });
-      newPost.save((err, post) => {
-        if (err) return console.error(err);
+      const duplicateQuery = await PostModel.findOne({
+        title: newPost.title,
       });
+      if (duplicateQuery === null) {
+        newPost.save((err, post) => {
+          if (err) return console.error(err);
+        });
+      }
     }
 
-    for (const handle of trackedHandles) {
+    for (const handle of user.trackedHandles) {
       let tweets = await TweetModel.find(
         { screen_name: handle, created_at: { $gte: begin } },
-        (err, tweets) => {
-          postBuilder(tweets, handle);
+        async (err, tweets) => {
+          await postBuilder(tweets, handle);
         }
       );
     }
@@ -93,6 +126,9 @@ async function updateTweetsForUser(userName) {
     await fetchTweetsByTwitterHandle(handle);
   }
   await pushTweetsToMongo(tweetCollection);
+  await generateNewPostsForPeriod(
+    convertPreferredTimeToLastDatetime(user.preferredTimeGMT)
+  );
 }
 
 module.exports = updateTweetsForUser;
