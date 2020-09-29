@@ -1,3 +1,14 @@
-<h6>Dashboard</h6>
 <h3>Welcome {{name}}</h3>
+<a href="/handles/" class="btn btn-secondary">Edit Tracked Handles</a>
+<p>Posts</p>
+{{#if posts}}
+  <div>
+  {{#each posts}}
+
+  {{/each}}
+  </div>
+{{else}}
+  <p>No post summaries saved in database</p>
+{{/if}}
+<br>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>
