@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  preferredTimeGMT: {
+  preferredTimeUTC: {
     type: String,
     default: "23:00",
   },

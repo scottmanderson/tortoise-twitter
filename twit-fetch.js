@@ -33,11 +33,13 @@ function convertPreferredTimeToLastDatetime(time) {
     );
   } else {
     return new Date(
-      now.getFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      prefHour,
-      prefMinute
+      Date.UTC(
+        now.getFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        prefHour,
+        prefMinute
+      )
     );
   }
 }
@@ -69,7 +71,7 @@ async function updateTweetsForUser(userName) {
           created_at: tweet.created_at,
           name: tweet.user.name,
           screen_name: tweet.user.screen_name,
-          full_text: tweet.full_text,
+          text: tweet.text,
         });
         const duplicateQuery = await TweetModel.findOne({
           twitter_id: tweet.id,
@@ -90,17 +92,20 @@ async function updateTweetsForUser(userName) {
     if (!lookbackPeriodHours) {
       lookbackPeriodHours = 24;
     }
-    let begin = new Date(end.setDate(end.getDate() - lookbackPeriodHours / 24));
+    let begin = new Date(end);
+    begin.setHours(end.getHours() - lookbackPeriodHours);
 
     async function postBuilder(tweets, handle) {
       let newPost = new PostModel({
-        title: `Tweets from @ ${handle} in ${lookbackPeriodHours} hours ending ${end.toLocaleString(
+        title: `Tweets from @${handle} in ${lookbackPeriodHours} hours ending ${end.toLocaleString(
           "en-US"
         )}`,
         userID: user.id,
         handle: handle,
+        publishedAt: new Date(),
         effectiveDatetime: end,
         includedTweets: tweets || "",
+        description: null, // TODO populate
       });
       const duplicateQuery = await PostModel.findOne({
         title: newPost.title,
@@ -113,12 +118,11 @@ async function updateTweetsForUser(userName) {
     }
 
     for (const handle of user.trackedHandles) {
-      let tweets = await TweetModel.find(
-        { screen_name: handle, created_at: { $gte: begin } },
-        async (err, tweets) => {
-          await postBuilder(tweets, handle);
-        }
-      );
+      let tweets = await TweetModel.find({
+        screen_name: handle,
+        created_at: { $gte: begin },
+      });
+      await postBuilder(tweets, handle);
     }
   }
 
@@ -127,7 +131,7 @@ async function updateTweetsForUser(userName) {
   }
   await pushTweetsToMongo(tweetCollection);
   await generateNewPostsForPeriod(
-    convertPreferredTimeToLastDatetime(user.preferredTimeGMT)
+    convertPreferredTimeToLastDatetime(user.preferredTimeUTC)
   );
 }
 
