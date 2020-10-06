@@ -7,7 +7,6 @@ const postSchema = new mongoose.Schema({
   effectiveDatetime: Date,
   includedTweets: Object,
   urlPath: String,
-  description: String,
 });
 
 module.exports = mongoose.model("Post", postSchema);

@@ -1,4 +1,5 @@
 const express = require("express");
+const hbs = require("express-handlebars").create();
 const router = express.Router();
 const RSS = require("rss");
 
@@ -8,6 +9,10 @@ router.get("/", async (req, res) => {
   const posts = await PostModel.find({
     userID: req.user.id || req.query.u,
   });
+
+  const rssDescriptionTemplate = await hbs.getTemplate(
+    "./views/partials/_rssDescription.hbs"
+  );
 
   let feed = new RSS({
     title: "Twitter Summaries By Handle",
@@ -20,7 +25,7 @@ router.get("/", async (req, res) => {
   for (const post of posts) {
     feed.item({
       title: post.title,
-      description: post.description,
+      description: rssDescriptionTemplate({ post: post }),
       url: `/posts/${post.urlPath}`,
       date: post.effectiveDatetime,
     });
