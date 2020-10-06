@@ -83,6 +83,8 @@ app.use(flash());
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/handles", require("./routes/handles"));
+app.use("/posts", require("./routes/posts"));
+app.use("/rss", require("./routes/rss"));
 
 async function updateDB() {
   let usernamesToUpdate = [];
