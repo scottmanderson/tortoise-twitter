@@ -5,9 +5,9 @@
       <p>
         <h1>{{post.title}}</h1>
         {{#each post.includedTweets}}
-          <h2>{{this.name}}</h2>
-          <p>{{this.screen_name}}</p>
+          <p>{{this.created_at}}</p>
           <p>{{this.text}}</p>
+          <br>
         {{/each}}
       </p>
       {{else}}
