@@ -20,34 +20,24 @@ function convertPreferredTimeToLastDatetime(time) {
   const prefHour = Number(time.slice(0, time.indexOf(":")));
   const prefMinute = Number(time.slice(time.indexOf(":") + 1));
   const now = new Date();
-  const yesterday =
-    now.getUTCHours() > prefHour ||
-    (now.getUTCHours() === prefHour && now.getUTCMinutes() > prefMinute);
-  if (yesterday) {
-    return new Date(
+  let fixedEnd = new Date(
+    Date.UTC(
       now.getUTCFullYear(),
       now.getUTCMonth(),
-      now.getUTCDate() - 1,
+      now.getUTCDate(),
       prefHour,
       prefMinute
-    );
-  } else {
-    return new Date(
-      Date.UTC(
-        now.getFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        prefHour,
-        prefMinute
-      )
-    );
+    )
+  );
+  if (fixedEnd > now) {
+    fixedEnd.setUTCDate(fixedEnd.getUTCDate() - 1);
   }
+  return fixedEnd;
 }
 
 async function updateTweetsForUser(userName) {
   let user = await UserModel.findOne({ name: userName });
   let trackedHandles = user.trackedHandles;
-  let userTimeCutoff = user.preferredTimeGMT;
   let tweetCollection = {};
 
   async function fetchTweetsByTwitterHandle(handle) {
@@ -104,13 +94,17 @@ async function updateTweetsForUser(userName) {
         handle: handle,
         publishedAt: new Date(),
         effectiveDatetime: end,
-        includedTweets: tweets || "",
+        includedTweets: tweets || [],
         description: null, // TODO populate
       });
       const duplicateQuery = await PostModel.findOne({
         title: newPost.title,
       });
-      if (duplicateQuery === null) {
+      if (
+        duplicateQuery === null &&
+        newPost.includedTweets &&
+        newPost.includedTweets.length
+      ) {
         newPost.save((err, post) => {
           if (err) return console.error(err);
         });
