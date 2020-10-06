@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
   for (const post of posts) {
     feed.item({
       title: post.title,
-      description: rssDescriptionTemplate({ post: post }),
+      description: rssDescriptionTemplate({ post: post.toJSON() }),
       url: `/posts/${post.urlPath}`,
       date: post.effectiveDatetime,
     });
