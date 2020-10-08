@@ -5,7 +5,8 @@ const tweetSchema = new mongoose.Schema({
   created_at: Date,
   name: String,
   screen_name: String,
-  text: String,
+  full_text: String,
+  url: String,
 });
 
 module.exports = mongoose.model("Tweet", tweetSchema);

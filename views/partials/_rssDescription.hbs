@@ -1,6 +1,7 @@
 {{#if post}}
 <p>
   <h1>{{post.title}}</h1>
+  <a href="https://twitter.com/{{post.handle}}"
   {{#each post.includedTweets}}
     <p>{{this.created_at}}</p>
     <p>{{this.text}}</p>

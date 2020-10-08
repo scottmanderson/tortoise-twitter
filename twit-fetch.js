@@ -42,7 +42,10 @@ async function updateTweetsForUser(userName) {
 
   async function fetchTweetsByTwitterHandle(handle) {
     try {
-      let options = { screen_name: handle };
+      let options = {
+        screen_name: handle,
+        tweet_mode: "extended",
+      };
       let handlePromise = await T.get("statuses/user_timeline", options).then(
         (result) => {
           tweetCollection[handle] = result.data;
@@ -61,7 +64,7 @@ async function updateTweetsForUser(userName) {
           created_at: tweet.created_at,
           name: tweet.user.name,
           screen_name: tweet.user.screen_name,
-          text: tweet.text,
+          full_text: tweet.full_text,
         });
         const duplicateQuery = await TweetModel.findOne({
           twitter_id: tweet.id,
