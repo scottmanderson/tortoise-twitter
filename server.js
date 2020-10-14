@@ -105,7 +105,21 @@ async function updateDB() {
   }
 }
 
+// Database updates, on server setup and daily
 updateDB();
+function runUpdatePeriodically() {
+  // Set for once daily
+  // TODO: Expansion option: run for all desired times
+  setInterval(updateDB, 24 * 60 ** 2 * 1000);
+}
+
+let now = new Date();
+let targetTime = new Date(now).setUTCHours(23);
+targetTime =
+  targetTime < now
+    ? targetTime.setUTCDate(targetTime.getUTCDate() + 1)
+    : targetTime;
+setTimeout(runUpdatePeriodically, targetTime - now);
 
 const PORT = process.env.PORT || 3000;
 
