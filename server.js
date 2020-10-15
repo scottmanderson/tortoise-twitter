@@ -108,9 +108,12 @@ async function updateDB() {
 // Database updates, on server setup and daily
 updateDB();
 function runUpdatePeriodically() {
+  // First, run the function as setInterval will not call the function until the end of the period
+  updateDB();
   // Set for once daily
   // TODO: Expansion option: run for all desired times
   setInterval(updateDB, 24 * 60 ** 2 * 1000);
+  console.log("Running Periodic Update");
 }
 
 let now = new Date();
