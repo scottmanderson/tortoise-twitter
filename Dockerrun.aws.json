@@ -1,0 +1,47 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "essential": true,
+            "links": [
+                "mongo"
+            ],
+            "name": "app",
+            "image": "node",
+            "memory": 128,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 80
+                }
+            ]
+        },
+        {
+            "essential": true,
+            "image": "mongo",
+            "mountPoints": [
+                {
+                    "containerPath": "/data/db",
+                    "sourceVolume": "_DataDb"
+                }
+            ],
+            "name": "mongo",
+            "memory": 128,
+            "portMappings": [
+                {
+                    "containerPort": 27017,
+                    "hostPort": 27017
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "./data/db"
+            },
+            "name": "_DataDb"
+        }
+    ]
+}
