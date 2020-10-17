@@ -69,10 +69,13 @@ router.post("/register", (req, res) => {
           password2,
         });
       } else {
+        let trackedHandles = trackedHandlesStr.split(", ");
         const newUser = new UserModel({
           name,
           email,
           password,
+          trackedHandles,
+          preferredTimeGMT,
         });
 
         bcrypt.genSalt(10, (err, salt) => {
