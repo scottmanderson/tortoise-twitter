@@ -31,8 +31,8 @@ router.get("/", async (req, res) => {
     });
   }
 
-  const xml = feed.xml();
-  res.set("Content-Type", "application/rss+xml");
+  const xml = feed.xml({ indent: "  " });
+  res.type("application/rss+xml");
   res.send(xml);
 });
 
