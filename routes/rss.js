@@ -17,8 +17,8 @@ router.get("/", async (req, res) => {
   let feed = new RSS({
     title: "Twitter Summaries By Handle",
     description: "Chronological Feed of Twitter Summaries By Handle",
-    feed_url: null,
-    site_url: null,
+    feed_url: req.hostname + "/rss/",
+    site_url: req.hostname,
     image_url: null,
   });
 

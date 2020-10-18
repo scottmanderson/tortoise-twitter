@@ -65,6 +65,11 @@ async function updateTweetsForUser(userName) {
           name: tweet.user.name,
           screen_name: tweet.user.screen_name,
           full_text: tweet.full_text,
+          url:
+            "https://www.twitter.com/" +
+            tweet.user.screen_name +
+            "/status/" +
+            tweet.id,
         });
         const duplicateQuery = await TweetModel.findOne({
           twitter_id: tweet.id,
@@ -98,7 +103,7 @@ async function updateTweetsForUser(userName) {
         publishedAt: new Date(),
         effectiveDatetime: end,
         includedTweets: tweets || [],
-        description: null, // TODO populate
+        urlPath: req.hostname,
       });
       const duplicateQuery = await PostModel.findOne({
         title: newPost.title,
