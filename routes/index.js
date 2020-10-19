@@ -23,6 +23,7 @@ router.get("/dashboard", ensureAuth, async (req, res) => {
     res.render("dashboard", {
       layout: "main",
       name: req.user.name,
+      rssUrl: "http://" + req.hostname + "/rss/" + req.user._id,
       posts,
     });
   } catch (err) {
