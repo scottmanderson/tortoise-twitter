@@ -103,7 +103,6 @@ async function updateTweetsForUser(userName) {
         publishedAt: new Date(),
         effectiveDatetime: end,
         includedTweets: tweets || [],
-        urlPath: req.hostname,
       });
       const duplicateQuery = await PostModel.findOne({
         title: newPost.title,

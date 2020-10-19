@@ -5,9 +5,9 @@ const RSS = require("rss");
 
 const PostModel = require("../models/Post");
 
-router.get("/", async (req, res) => {
+router.get("/:uid", async (req, res) => {
   const posts = await PostModel.find({
-    userID: req.user.id || req.query.u,
+    userID: req.params.uid,
   });
 
   const rssDescriptionTemplate = await hbs.getTemplate(
@@ -17,8 +17,8 @@ router.get("/", async (req, res) => {
   let feed = new RSS({
     title: "Twitter Summaries By Handle",
     description: "Chronological Feed of Twitter Summaries By Handle",
-    feed_url: req.hostname + "/rss/",
-    site_url: req.hostname,
+    feed_url: "http://" + req.hostname + "/rss/" + req.params.uid,
+    site_url: "http://" + req.hostname,
     image_url: null,
   });
 
@@ -26,7 +26,38 @@ router.get("/", async (req, res) => {
     feed.item({
       title: post.title,
       description: rssDescriptionTemplate({ post: post.toJSON() }),
-      url: `/posts/${post.urlPath}`,
+      url: `https://${req.hostname}/posts/${post._id}`,
+      date: post.effectiveDatetime,
+    });
+  }
+
+  const xml = feed.xml({ indent: "  " });
+  res.type("application/rss+xml");
+  res.send(xml);
+});
+
+router.get("/", async (req, res) => {
+  const posts = await PostModel.find({
+    userID: req.user.id,
+  });
+
+  const rssDescriptionTemplate = await hbs.getTemplate(
+    "./views/partials/_rssDescription.hbs"
+  );
+
+  let feed = new RSS({
+    title: "Twitter Summaries By Handle",
+    description: "Chronological Feed of Twitter Summaries By Handle",
+    feed_url: "http://" + req.hostname + "/rss/" + req.user._id,
+    site_url: "http://" + req.hostname,
+    image_url: null,
+  });
+
+  for (const post of posts) {
+    feed.item({
+      title: post.title,
+      description: rssDescriptionTemplate({ post: post.toJSON() }),
+      url: `https://${req.hostname}/posts/${post._id}`,
       date: post.effectiveDatetime,
     });
   }
