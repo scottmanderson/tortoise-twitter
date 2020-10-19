@@ -122,6 +122,9 @@ async function updateTweetsForUser(userName) {
       let tweets = await TweetModel.find({
         screen_name: handle,
         created_at: { $gte: begin },
+      }).collation({
+        locale: "en",
+        strength: 2,
       });
       await postBuilder(tweets, handle);
     }
