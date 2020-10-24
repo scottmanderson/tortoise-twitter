@@ -28,8 +28,9 @@ app.use(express.json());
 // Method Override (POST -> PUT/DELETE)
 app.use(methodOverride("_method"));
 
-// Static folder
+// Static folders
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public/images")));
 
 // view engine configuration
 // Handlebars Helpers
