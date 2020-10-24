@@ -44,7 +44,12 @@ describe("register route works", () => {
     });
     query = UserModel.findOne({ name: "test_jest" });
     expect(query).toBeTruthy();
-
     done();
+  });
+});
+
+describe("login route works", () => {
+  test("login page loads", (done) => {
+    request(app).get("/users/login").expect(200, done);
   });
 });
