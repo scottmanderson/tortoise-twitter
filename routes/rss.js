@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
     description: "Chronological Feed of Twitter Summaries By Handle",
     feed_url: "http://" + req.hostname + "/rss/" + req.user._id,
     site_url: "http://" + req.hostname,
-    image_url: null,
+    image_url: "http://" + req.hostname + "/images/twitterRSS.png",
   });
 
   for (const post of posts) {
