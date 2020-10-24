@@ -49,6 +49,13 @@ router.post("/register", (req, res) => {
     });
   }
 
+  if (preferredTimeGMT.indexOf(":") === -1) {
+    errors.push({
+      msg:
+        "default time must included ':' as a zulu time expression (e.g. 23:00)",
+    });
+  }
+
   if (errors.length > 0) {
     res.render("register", {
       errors,
