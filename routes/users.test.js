@@ -9,24 +9,12 @@ const request = require("supertest");
 const express = require("express");
 
 beforeAll(async () => {
-  const connectDB = async () => {
-    try {
-      const conn = await mongoose.connect(process.env.MONGO_URI + "/test", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-      });
-
-      console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  };
+  const conn = connectDB("test");
 });
 
 afterAll(async () => {
   UserModel.deleteOne({ name: "test_jest" });
+  mongoose.disconnect();
 });
 
 describe("register route works", () => {
