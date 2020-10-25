@@ -33,7 +33,8 @@ function loginUser() {
       .send({
         email: "test_jest_login@test.com",
         password: "abcdefghijk",
-      });
+      })
+      .expect(200);
     done();
   };
 }
