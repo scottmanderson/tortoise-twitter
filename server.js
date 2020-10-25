@@ -28,8 +28,9 @@ app.use(express.json());
 // Method Override (POST -> PUT/DELETE)
 app.use(methodOverride("_method"));
 
-// Static folder
+// Static folders
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public/images")));
 
 // view engine configuration
 // Handlebars Helpers
@@ -124,9 +125,4 @@ targetTime =
     : targetTime;
 setTimeout(runUpdatePeriodically, targetTime - now);
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(
-  PORT,
-  console.log(`Server running on ${PORT} in ${process.env.NODE_ENV} mode`)
-);
+module.exports = app;
