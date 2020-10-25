@@ -3,19 +3,40 @@ const connectDB = require("../config/db");
 const users = require("./users");
 const UserModel = require("../models/User");
 
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const request = require("supertest");
 const express = require("express");
 
 beforeAll(async () => {
   const conn = connectDB("test");
+  const newUser = request(app).post("/users/register").send({
+    name: "test_jest_login",
+    email: "test_jest_login@test.com",
+    password: "abcdefghijk",
+    password2: "abcdefghijk",
+    trackedHandlesStr: "aldaily, dan_abramov, juliagalef",
+    preferredTimeGMT: "6:00",
+  });
 });
 
 afterAll(async () => {
   UserModel.deleteOne({ name: "test_jest" });
+  UserModel.deleteOne({ name: "test_jest_login" });
   mongoose.disconnect();
 });
+
+function loginUser() {
+  return function (done) {
+    app
+      .post("/users/login")
+      .set("Content-Type", "application/x-www-form-urlencoded")
+      .send({
+        email: "test_jest_login@test.com",
+        password: "abcdefghijk",
+      });
+    done();
+  };
+}
 
 describe("register route works", () => {
   test("register page loads", (done) => {
@@ -37,6 +58,11 @@ describe("register route works", () => {
 });
 
 describe("login route works", () => {
+  test("login should succeed", (done) => {
+    loginUser();
+    done();
+  });
+
   test("login page loads", (done) => {
     request(app).get("/users/login").expect(200, done);
   });
