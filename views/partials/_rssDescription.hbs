@@ -1,5 +1,5 @@
 {{#if post}}
-<p>
+<div>
   <h1>{{post.title}}</h1>
   <a href="https://twitter.com/{{post.handle}}"
   {{#each post.includedTweets}}
@@ -8,7 +8,7 @@
     <a href={{this.url}}>{{this.url}}</a>
     <br>
   {{/each}}
-</p>
+</div>
 {{else}}
   <p>post not found</p>
 {{/if}}

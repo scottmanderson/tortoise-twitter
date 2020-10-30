@@ -126,7 +126,7 @@ async function updateTweetsForUser(userName) {
         locale: "en",
         strength: 2,
       });
-      await postBuilder(tweets, handle);
+      await postBuilder(tweets.reverse(), handle);
     }
   }
 
