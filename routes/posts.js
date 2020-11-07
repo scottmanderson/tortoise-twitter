@@ -15,7 +15,7 @@ router.get("/:id", async (req, res) => {
       _id: req.params.id,
     });
     post = post.toJSON();
-    res.render("post", {
+    res.render("./partials/_post", {
       layout: "post",
       post,
     });

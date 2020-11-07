@@ -22,6 +22,7 @@ router.get("/dashboard", ensureAuth, async (req, res) => {
     const posts = await PostModel.find({ userID: req.user.id }).lean();
     res.render("dashboard", {
       layout: "main",
+      hostname: req.hostname,
       name: req.user.name,
       rssUrl: "http://" + req.hostname + "/rss/" + req.user._id,
       posts,
