@@ -1,22 +1,21 @@
 <h3>Welcome {{name}}</h3>
 <a href="/handles/" class="btn btn-secondary">Edit Tracked Handles</a>
 <p>RSS URL:  <a href={{rssUrl}}>{{rssUrl}}</a></p>
+<br>
 <p>Posts</p>
 {{#if posts}}
   <div>
   {{#each posts}}
-    {{#each post}}
-      <p>
-        <h1>{{post.title}}</h1>
-        <a href="https://twitter.com/{{post.handle}}"
-        {{#each post.includedTweets}}
+      <div>
+        <h5>{{this.title}}</h5>
+        <a href="https://twitter.com/{{this.handle}}">https://twitter.com/{{this.handle}}</a>
+        {{#each this.includedTweets}}
           <p>{{this.created_at}}</p>
           <p>{{this.full_text}}</p>
           <a href={{this.url}}>{{this.url}}</a>
-          <br>
+          <hr />
         {{/each}}
-      </p>
-    {{/each}}
+      </div>
   {{/each}}
   </div>
 {{else}}
