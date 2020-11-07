@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const tweetSchema = new mongoose.Schema({
-  twitter_id: Number,
+  twitter_id: String,
   created_at: Date,
   name: String,
   screen_name: String,

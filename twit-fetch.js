@@ -60,7 +60,7 @@ async function updateTweetsForUser(userName) {
     for (const key in objOfTweetArrays) {
       for (const tweet of objOfTweetArrays[key]) {
         let currentTweet = new TweetModel({
-          twitter_id: tweet.id,
+          twitter_id: tweet.id_str,
           created_at: tweet.created_at,
           name: tweet.user.name,
           screen_name: tweet.user.screen_name,
@@ -69,7 +69,7 @@ async function updateTweetsForUser(userName) {
             "https://www.twitter.com/" +
             tweet.user.screen_name +
             "/status/" +
-            tweet.id,
+            tweet.id_str,
         });
         const duplicateQuery = await TweetModel.findOne({
           twitter_id: tweet.id,
