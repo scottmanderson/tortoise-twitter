@@ -8,7 +8,9 @@ const {
 } = require("../middleware/auth");
 const PostModel = require("../models/Post");
 
-router.get("/", forwardAuthenticated, (req, res) => res.render("dashboard"));
+router.get("/", ensureAuth, forwardAuthenticated, (req, res) =>
+  res.render("dashboard")
+);
 
 router.get("/", ensureGuest, (req, res) => {
   res.render("login", {

@@ -6,6 +6,10 @@ body {
     background-color: cornflowerblue;
 }
 
+input {
+    color: ivory;
+}
+
 .card {
     background-color: rgba(10, 10, 50, 1);
 }
