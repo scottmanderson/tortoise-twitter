@@ -1,17 +1,20 @@
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
-    <div class="card card-body">Register
+    <div class="card card-body">
+      <h4>Register</h4>
+      <br>
       <form action="/users/register" method="POST">
         <div class="form-group">
           <label for="name">Name</label>
           <input
-            type="name"
+            type="text"
             id="name"
             name="name"
             class="form-control"
             placeholder="Enter Name"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="email">Email</label>
           <input
@@ -22,6 +25,7 @@
             placeholder="Enter Email"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="password">Password</label>
           <input
@@ -32,6 +36,7 @@
             placeholder="Create Password"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="password2">Confirm Password</label>
           <input
@@ -42,30 +47,35 @@
             placeholder="Confirm Password"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="trackedHandlesStr">Initial Tracked Handles</label>
           <input
-            type="trackedHandlesStr"
+            type="text"
             id="trackedHandlesStr"
             name="trackedHandlesStr"
             class="form-control"
             placeholder="handle1, handle2, ..."
           />
         </div>
+        <br>
         <div class="form-group">
         <label for="preferredTimeGMT">Preferred Post Generation Time (GMT)</label>
         <input
-          type="preferredTimeGMT"
+          type="text"
           id="preferredTimeGMT"
           name="preferredTimeGMT"
           class="form-control"
           placeholder="23:00"
         />
-    </div>
+        </div>
+        <br>
         <button type="submit" class="btn btn-primary btn-block">
           Register
         </button>
       </form>
+      <br>
+      <hr />
       <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
     </div>
   </div>
