@@ -3,7 +3,7 @@
     <div class="card card-body">
       {{#if post}}
       <div>
-        <h1>{{post.title}}</h1>
+        <h4>{{post.title}}</h4>
         <a href="https://twitter.com/{{post.handle}}">https://twitter.com/{{post.handle}}</a>
         {{#each post.includedTweets}}
           <p>{{this.created_at}}</p>

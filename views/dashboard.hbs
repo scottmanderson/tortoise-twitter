@@ -2,13 +2,12 @@
 <a href="/handles/" class="btn btn-secondary">Edit Tracked Handles</a>
 <p>RSS URL:  <a href={{rssUrl}}>{{rssUrl}}</a></p>
 <br>
-<p>Posts</p>
+<h4>Posts</h4>
 {{#if posts}}
   <div>
   {{#each posts}}
       <div>
-        <h5>{{this.title}}</h5>
-        <a href="http://{{../hostname}}/posts/{{this._id}}">http://{{../hostname}}/posts/{{this._id}}</a>
+        <a href="/posts/{{this._id}}">{{this.title}}</a>
       </div>
   {{/each}}
   </div>
