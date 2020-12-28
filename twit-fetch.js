@@ -95,9 +95,7 @@ async function updateTweetsForUser(userName) {
 
     async function postBuilder(tweets, handle) {
       let newPost = new PostModel({
-        title: `Tweets from @${handle} in ${lookbackPeriodHours} hours ending ${end.toLocaleString(
-          "en-US"
-        )}`,
+        title: `Tweets from @${handle} in ${lookbackPeriodHours} hours ending ${end.toLocaleTimeString()} on ${end.toLocaleDateString()}`,
         userID: user.id,
         handle: handle,
         publishedAt: new Date(),
