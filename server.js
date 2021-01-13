@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const exphbs = require("express-handlebars");
+const favicon = require("serve-favicon");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -31,6 +32,8 @@ app.use(methodOverride("_method"));
 // Static folders
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public/images")));
+
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 // view engine configuration
 // Handlebars Helpers
